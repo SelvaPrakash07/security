@@ -6,6 +6,8 @@ import com.springrolejwt.model.LoginUser;
 import com.springrolejwt.model.User;
 import com.springrolejwt.model.UserDto;
 import com.springrolejwt.service.UserService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -50,14 +52,17 @@ public class UserController {
         return userService.save(user);
     }
 
+
     @RolesAllowed(value = "ADMIN")
     @RequestMapping(value="/adminping", method = RequestMethod.GET)
+    @ApiOperation(value = "userList", authorizations = {@Authorization(value = "Bearer")})
     public String adminPing(){
         return "Only Admins Can Read This";
     }
 
     @RolesAllowed(value = "USER")
     @RequestMapping(value="/userping", method = RequestMethod.GET)
+    @ApiOperation(value = "userList", authorizations = {@Authorization(value = "Bearer")})
     public String userPing(){
         return "Any User Can Read This";
     }

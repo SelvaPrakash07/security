@@ -9,25 +9,26 @@ public class User {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
 
-    @Column
+    @Column(name = "username")
     private String username;
 
-    @Column
+    @Column(name = "password")
     @JsonIgnore
     private String password;
 
-    @Column
+    @Column(name = "email")
     private String email;
 
-    @Column
+    @Column(name = "phone")
     private String phone;
 
-    @Column
+    @Column(name = "name")
     private String name;
 
-    @Column
+    @Column(name = "businessTitle")
     private String businessTitle;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

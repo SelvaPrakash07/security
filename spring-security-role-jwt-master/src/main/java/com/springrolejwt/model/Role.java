@@ -7,12 +7,13 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
 
-    @Column
+    @Column(name = "name")
     private String name;
 
-    @Column
+    @Column(name = "description")
     private String description;
 
     public long getId() {

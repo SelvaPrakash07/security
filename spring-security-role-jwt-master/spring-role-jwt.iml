@@ -103,5 +103,6 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.11.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-test:5.3.3.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:5.3.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: io.swagger:swagger-annotations:1.5.20" level="project" />
   </component>
 </module>
