@@ -1,7 +1,9 @@
 package com.springrolejwt.service.impl;
 
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import com.springrolejwt.dao.UserDao;
 import com.springrolejwt.model.Role;
 import com.springrolejwt.model.User;
@@ -28,21 +30,17 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Autowired
     private BCryptPasswordEncoder bcryptEncoder;
 
-    @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return null;
-    }
-    public UserDetails loadUserByUsername(String username,List<Role> role) throws UsernameNotFoundException {
-        Optional<User> user= Optional.ofNullable(userDao.findByUsername(username));
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userDao.findByUsername(username);
         if(user == null){
             throw new UsernameNotFoundException("Invalid username or password.");
         }
-        return new org.springframework.security.core.userdetails.User(user.get().getUsername(), user.get().getPassword(), getAuthority(user.get(),role));
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthority(user));
     }
 
-    private Set getAuthority(User user,List<Role> roles) {
-        Set authorities = new HashSet<>();
-        roles.stream().forEachOrdered(role -> {
+    private Set<SimpleGrantedAuthority> getAuthority(User user) {
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        user.getRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
         });
         return authorities;
@@ -61,6 +59,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public User save(UserDto user) {
+
         User nUser = user.getUserFromDto();
         nUser.setPassword(bcryptEncoder.encode(user.getPassword()));
 
@@ -70,11 +69,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
         if(nUser.getEmail().split("@")[1].equals("admin.edu")){
             role = roleService.findByName("ADMIN");
-            roleSet.add(role); }
+            roleSet.add(role);
+        }
 
         nUser.setRoles(roleSet);
         return userDao.save(nUser);
     }
-
-
 }

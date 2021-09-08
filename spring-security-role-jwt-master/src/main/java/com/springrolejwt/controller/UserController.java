@@ -6,18 +6,15 @@ import com.springrolejwt.model.LoginUser;
 import com.springrolejwt.model.User;
 import com.springrolejwt.model.UserDto;
 import com.springrolejwt.service.UserService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.security.RolesAllowed;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -53,16 +50,15 @@ public class UserController {
     }
 
 
-    @RolesAllowed(value = "ADMIN")
+
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value="/adminping", method = RequestMethod.GET)
-    @ApiOperation(value = "userList", authorizations = {@Authorization(value = "Bearer")})
     public String adminPing(){
         return "Only Admins Can Read This";
     }
 
-    @RolesAllowed(value = "USER")
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value="/userping", method = RequestMethod.GET)
-    @ApiOperation(value = "userList", authorizations = {@Authorization(value = "Bearer")})
     public String userPing(){
         return "Any User Can Read This";
     }
